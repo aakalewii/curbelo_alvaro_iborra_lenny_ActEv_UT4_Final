@@ -28,22 +28,25 @@ public class Reserva {
         this.fechaCheckOut = fechaCheckOut;
         this.precioTotal = precioTotal;
     }
-
-    public void anadirCliente(Cliente cliente) {
+    
+    public void anadirCliente(Cliente cliente) throws ClienteNoEncontradoException {
+        if (cliente == null) {
+            throw new ClienteNoEncontradoException("El cliente no puede ser nulo.");
+                }
         if (cliente.getReservasActivas() >= 3) {
-            System.out.println("Error: El cliente ya tiene 3 reservas activas.");
-            return;
+                throw new ClienteNoEncontradoException("El cliente ya tiene 3 reservas activas.");
         }
-        this.cliente.add(cliente);
-        // Incrementar el contador de reservas activas para todas las habitaciones de la reserva
-        for (Habitacion habitacion : this.habitacion) {
-            if (habitacion.getEstado() == Estado.DISPONIBLE) {
-                cliente.incrementarReservasActivas(habitacion);
-            } else {
-                System.out.println("La habitación " + habitacion.getNumero() + " no está disponible.");
+            this.cliente.add(cliente);
+            System.out.println("Cliente añadido a la reserva: " + cliente.getNombre());
+        }
+    
+        // Clase interna para la excepción personalizada
+        public static class ClienteNoEncontradoException extends Exception {
+            public ClienteNoEncontradoException(String mensaje) {
+                super(mensaje);
             }
         }
-    }
+    
 
     public void anadirHabitacion(Habitacion habitacion) {
         if (habitacion.getEstado() != Estado.DISPONIBLE) {
