@@ -3,15 +3,15 @@ package com.empresa.model;
 import java.util.UUID;
 
 public class Habitacion {
-    public String idHabitacion;
+    public int numero;
     public Tipo tipo;
     double precio;
     public Estado estado;
     public String descripcion;
 
 
-    public Habitacion(Tipo tipo, double precio, Estado estado, String descripcion) {
-        this.idHabitacion = UUID.randomUUID().toString();
+    public Habitacion(int numero, Tipo tipo, double precio, Estado estado, String descripcion) {
+        this.numero = numero;
         this.tipo = tipo;
         this.precio = precio;
         this.estado = estado;
@@ -22,7 +22,7 @@ public class Habitacion {
         if (this.estado == Estado.DISPONIBLE) {
             this.estado = Estado.RESERVADO;
         } else {
-            System.out.println("La habitación " + this.idHabitacion + " está " + this.estado);
+            System.out.println("La habitación " + this.numero + " está " + this.estado);
         }
     }
 
@@ -30,7 +30,7 @@ public class Habitacion {
         if (this.estado == Estado.RESERVADO) {
             this.estado = Estado.OCUPADO;
         } else {
-            System.out.println("La habitación " + this.idHabitacion + " está " + this.estado);
+            System.out.println("La habitación " + this.numero + " está " + this.estado);
         }
     }
 
@@ -38,7 +38,7 @@ public class Habitacion {
         if (this.estado == Estado.OCUPADO) {
             this.estado = Estado.DISPONIBLE;
         } else {
-            System.out.println("La habitación " + this.idHabitacion + " está " + this.estado);
+            System.out.println("La habitación " + this.numero + " está " + this.estado);
         }
     }
 

@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.UUID;
 
 import com.empresa.model.Cliente;
+import com.empresa.model.Estado;
 import com.empresa.model.Habitacion;
+import com.empresa.model.Tipo;
 
 public class Reserva {
     private String idReserva;
@@ -50,6 +52,48 @@ public class Reserva {
         }
         this.fechaCheckOut = fecha;
         System.out.println("Check-out realizado el: " + fechaCheckOut);
+    }
+
+    public Habitacion buscarnumero(int numero) {
+        for (Habitacion habitacion : this.habitacion) {
+            if (habitacion.numero == numero) {
+                return habitacion;
+            }
+        }
+        System.out.println("Habitación no encontrada: " + numero);
+        return null;
+    }
+
+    public Habitacion buscarTipo(String tipo){
+        try{
+            Tipo enumTipo = Tipo.valueOf(tipo.toUpperCase());
+            for (Habitacion habitacion : this.habitacion) {
+                if (habitacion.tipo == enumTipo) {
+                    System.out.println("Habitación" + tipo + " encontrada: " + habitacion.numero);
+                    return habitacion;
+                }
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("Tipo de habitación no válido: " + tipo);
+        }
+        System.out.println("Habitación "+tipo+" no encontrada.");
+        return null;
+    }
+
+    public Habitacion buscarEstado(String estado){
+        try{
+            Estado enumEstado = Estado.valueOf(estado.toUpperCase());
+            for (Habitacion habitacion : this.habitacion) {
+                if (habitacion.estado == enumEstado) {
+                    System.out.println("Habitación" + estado + " encontrada: " + habitacion.numero);
+                    return habitacion;
+                }
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("Estado de habitación no válido: " + estado);
+        }
+        System.out.println("Habitación "+estado+" no encontrada.");
+        return null;
     }
 
 }
