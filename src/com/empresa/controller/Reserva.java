@@ -3,15 +3,11 @@ package com.empresa.controller;
 import com.empresa.model.Cliente;
 import com.empresa.model.Estado;
 import com.empresa.model.Habitacion;
+import com.empresa.model.Tipo;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import com.empresa.model.Cliente;
-import com.empresa.model.Estado;
-import com.empresa.model.Habitacion;
-import com.empresa.model.Tipo;
 
 public class Reserva {
     private String idReserva;
@@ -39,12 +35,24 @@ public class Reserva {
             return;
         }
         this.cliente.add(cliente);
-        cliente.incrementarReservasActivas(); // Incrementar el contador de reservas activas
+        // Incrementar el contador de reservas activas para todas las habitaciones de la reserva
+        for (Habitacion habitacion : this.habitacion) {
+            if (habitacion.getEstado() == Estado.DISPONIBLE) {
+                cliente.incrementarReservasActivas(habitacion);
+            } else {
+                System.out.println("La habitación " + habitacion.getNumero() + " no está disponible.");
+            }
+        }
     }
 
     public void anadirHabitacion(Habitacion habitacion) {
-        this.habitacion.add(habitacion);
-        habitacion.reservar();
+        if (habitacion.getEstado() != Estado.DISPONIBLE) {
+            System.out.println("Error: La habitación " + habitacion.getNumero() + " no está disponible.");
+        } else {
+            this.habitacion.add(habitacion);
+            System.err.println("Habitación " + habitacion.getNumero() + " añadida a la reserva.");
+            habitacion.reservar();
+        }
     }
 
 

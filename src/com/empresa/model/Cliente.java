@@ -17,7 +17,11 @@ public class Cliente {
         return reservasActivas;
     }
 
-    public void incrementarReservasActivas() {
+    public void incrementarReservasActivas(Habitacion habitacion) {
+        if (habitacion.getEstado() != Estado.DISPONIBLE) {
+            System.out.println("Error: No se puede reservar una habitación que no está disponible.");
+            return;
+        }
         this.reservasActivas++;
     }
 
