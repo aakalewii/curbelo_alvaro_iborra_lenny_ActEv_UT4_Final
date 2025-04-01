@@ -1,5 +1,8 @@
 package com.empresa.controller;
 //comentario
+import com.empresa.model.Cliente;
+import com.empresa.model.Estado;
+import com.empresa.model.Habitacion;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -28,7 +31,12 @@ public class Reserva {
     }
 
     public void anadirCliente(Cliente cliente) {
+        if (cliente.getReservasActivas() >= 3) {
+            System.out.println("Error: El cliente ya tiene 3 reservas activas.");
+            return;
+        }
         this.cliente.add(cliente);
+        cliente.incrementarReservasActivas(); // Incrementar el contador de reservas activas
     }
 
     public void anadirHabitacion(Habitacion habitacion) {
@@ -52,6 +60,11 @@ public class Reserva {
         }
         this.fechaCheckOut = fecha;
         System.out.println("Check-out realizado el: " + fechaCheckOut);
+    
+
+    // Decrementar el contador de reservas activas
+    for (Cliente c : cliente) {
+        c.decrementarReservasActivas();
     }
 
     public Habitacion buscarnumero(int numero) {
@@ -96,4 +109,5 @@ public class Reserva {
         return null;
     }
 
+    }
 }
