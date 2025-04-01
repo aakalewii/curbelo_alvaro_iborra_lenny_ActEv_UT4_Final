@@ -1,5 +1,5 @@
 package com.empresa.model;
 
 public enum Tipo {
-    INDIVIDUAL, DOBLE, SUITE
+    INDIVIDUAL, DOBLE, SUITE, SENCILLA
 }

@@ -3,11 +3,11 @@ package com.empresa.model;
 import java.util.UUID;
 
 public class Habitacion {
-    public int numero;
-    public Tipo tipo;
-    double precio;
-    public Estado estado;
-    public String descripcion;
+    private int numero;
+    private Tipo tipo;
+    private double precio;
+    private Estado estado;
+    private String descripcion;
 
 
     public Habitacion(int numero, Tipo tipo, double precio, Estado estado, String descripcion) {
@@ -42,5 +42,26 @@ public class Habitacion {
         }
     }
 
+    public int getNumero() {
+        return numero;
+    }
+
+    public Tipo getTipo() {
+        return tipo;
+    }
+
+    public double getPrecio() {
+        return precio;
+    }
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    
 
 }

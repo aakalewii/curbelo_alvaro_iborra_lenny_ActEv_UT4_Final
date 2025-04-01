@@ -26,5 +26,15 @@ public class Cliente {
             this.reservasActivas--;
         }
     }
+
+    public String getIdCliente() {
+        return idCliente;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    
 }
 

@@ -4,6 +4,7 @@ import com.empresa.model.Cliente;
 import com.empresa.model.Estado;
 import com.empresa.model.Habitacion;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,11 +21,13 @@ public class Reserva {
     private LocalDate fechaCheckOut;
     private double precioTotal;
 
-    public Reserva(List<Cliente> cliente, List<Habitacion> habitacion, LocalDate fechaCheckIn,
+    public Reserva(Cliente cliente, Habitacion habitacion, LocalDate fechaCheckIn,
             LocalDate fechaCheckOut, double precioTotal) {
         this.idReserva = UUID.randomUUID().toString();
-        this.cliente = cliente;
-        this.habitacion = habitacion;
+        this.cliente = new ArrayList<>(); 
+        this.cliente.add(cliente);
+        this.habitacion = new ArrayList<>();
+        this.habitacion.add(habitacion);
         this.fechaCheckIn = fechaCheckIn;
         this.fechaCheckOut = fechaCheckOut;
         this.precioTotal = precioTotal;
@@ -61,15 +64,15 @@ public class Reserva {
         this.fechaCheckOut = fecha;
         System.out.println("Check-out realizado el: " + fechaCheckOut);
     
-
-    // Decrementar el contador de reservas activas
-    for (Cliente c : cliente) {
-        c.decrementarReservasActivas();
+        // Decrementar el contador de reservas activas
+        for (Cliente c : cliente) {
+            c.decrementarReservasActivas();
+        }
     }
 
     public Habitacion buscarnumero(int numero) {
         for (Habitacion habitacion : this.habitacion) {
-            if (habitacion.numero == numero) {
+            if (habitacion.getNumero() == numero) {
                 return habitacion;
             }
         }
@@ -81,8 +84,8 @@ public class Reserva {
         try{
             Tipo enumTipo = Tipo.valueOf(tipo.toUpperCase());
             for (Habitacion habitacion : this.habitacion) {
-                if (habitacion.tipo == enumTipo) {
-                    System.out.println("Habitación" + tipo + " encontrada: " + habitacion.numero);
+                if (habitacion.getTipo() == enumTipo) {
+                    System.out.println("Habitación" + tipo + " encontrada: " + habitacion.getNumero());
                     return habitacion;
                 }
             }
@@ -97,8 +100,8 @@ public class Reserva {
         try{
             Estado enumEstado = Estado.valueOf(estado.toUpperCase());
             for (Habitacion habitacion : this.habitacion) {
-                if (habitacion.estado == enumEstado) {
-                    System.out.println("Habitación" + estado + " encontrada: " + habitacion.numero);
+                if (habitacion.getEstado() == enumEstado) {
+                    System.out.println("Habitación" + estado + " encontrada: " + habitacion.getNumero());
                     return habitacion;
                 }
             }
@@ -110,4 +113,4 @@ public class Reserva {
     }
 
     }
-}
+
