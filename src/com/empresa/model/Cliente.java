@@ -1,5 +1,4 @@
 package com.empresa.model;
-//pollita
 import java.util.UUID;
 
 public class Cliente {
