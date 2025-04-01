@@ -8,8 +8,9 @@ import com.empresa.model.Tipo;
 import java.time.LocalDate;
 
 public class Main{
-    public static void main(String[] args) throws Reserva.ClienteNoEncontradoException {
+    public static void main(String[] args) throws Reserva.ClienteNoEncontradoException, Reserva.ReservaNoDisponibleException {
         Cliente cliente = new Cliente("Juan Perez");
+        Cliente cliente2 = new Cliente("Maria Lopez");
         Habitacion habitacion = new Habitacion(101, Tipo.SENCILLA, 100.0, Estado.DISPONIBLE, "Habitación sencilla con cama doble.");
         Habitacion habitacion2 = new Habitacion(102, Tipo.SENCILLA, 100.0, Estado.DISPONIBLE, "Habitación sencilla con cama doble.");
 
@@ -21,10 +22,12 @@ public class Main{
 
 
 
-        reserva.anadirCliente(null);
 
         reserva2.anadirCliente(cliente);
         reserva2.anadirHabitacion(habitacion);
+        reserva.anadirCliente(cliente2);
+        reserva.anadirHabitacion(habitacion);
+
 
         reserva3.anadirCliente(cliente);
         reserva3.anadirHabitacion(habitacion);

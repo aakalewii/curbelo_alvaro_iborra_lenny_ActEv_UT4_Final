@@ -48,13 +48,19 @@ public class Reserva {
         }
     
 
-    public void anadirHabitacion(Habitacion habitacion) {
+    public void anadirHabitacion(Habitacion habitacion) throws ReservaNoDisponibleException {
         if (habitacion.getEstado() != Estado.DISPONIBLE) {
-            System.out.println("Error: La habitación " + habitacion.getNumero() + " no está disponible.");
+            throw new ReservaNoDisponibleException("La habitación "+ habitacion.getNumero()+" no está disponible.");
         } else {
             this.habitacion.add(habitacion);
             System.err.println("Habitación " + habitacion.getNumero() + " añadida a la reserva.");
             habitacion.reservar();
+        }
+    }
+
+    public static class ReservaNoDisponibleException extends Exception {
+        public ReservaNoDisponibleException(String mensaje) {
+            super(mensaje);
         }
     }
 
