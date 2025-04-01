@@ -1,6 +1,5 @@
 package com.empresa.model;
 
-import java.util.UUID;
 
 public class Habitacion {
     private int numero;

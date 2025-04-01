@@ -18,6 +18,8 @@ public class Main{
         reserva.anadirCliente(cliente);
         reserva.anadirHabitacion(habitacion);
 
-        reserva.realizarCheckOut(LocalDate.now());
+        reserva.buscarnumero(101);
+        reserva.realizarCheckIn(LocalDate.now(), habitacion);
+        reserva.buscarEstado("OCUPADO");
     }
 }

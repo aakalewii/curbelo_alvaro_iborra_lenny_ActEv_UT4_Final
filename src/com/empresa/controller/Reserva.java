@@ -44,15 +44,17 @@ public class Reserva {
 
     public void anadirHabitacion(Habitacion habitacion) {
         this.habitacion.add(habitacion);
+        habitacion.reservar();
     }
 
 
-    public void realizarCheckIn(LocalDate fecha) {
+    public void realizarCheckIn(LocalDate fecha, Habitacion habitacion) {
         this.fechaCheckIn = fecha;
         System.out.println("Check-in realizado el: " + fechaCheckIn);
+        habitacion.ocupar();
     }
 
-    public void realizarCheckOut(LocalDate fecha) {
+    public void realizarCheckOut(LocalDate fecha, Habitacion habitacion) {
         if (fechaCheckIn == null) {
             System.out.println("Error: No se puede realizar el check-out sin haber hecho el check-in.");
             return;
@@ -63,6 +65,7 @@ public class Reserva {
         }
         this.fechaCheckOut = fecha;
         System.out.println("Check-out realizado el: " + fechaCheckOut);
+        habitacion.liberar();
     
         // Decrementar el contador de reservas activas
         for (Cliente c : cliente) {
@@ -85,7 +88,7 @@ public class Reserva {
             Tipo enumTipo = Tipo.valueOf(tipo.toUpperCase());
             for (Habitacion habitacion : this.habitacion) {
                 if (habitacion.getTipo() == enumTipo) {
-                    System.out.println("Habitación" + tipo + " encontrada: " + habitacion.getNumero());
+                    System.out.println("Habitación " + tipo + " encontrada: " + habitacion.getNumero());
                     return habitacion;
                 }
             }
@@ -101,7 +104,7 @@ public class Reserva {
             Estado enumEstado = Estado.valueOf(estado.toUpperCase());
             for (Habitacion habitacion : this.habitacion) {
                 if (habitacion.getEstado() == enumEstado) {
-                    System.out.println("Habitación" + estado + " encontrada: " + habitacion.getNumero());
+                    System.out.println("Habitación " + estado + " encontrada: " + habitacion.getNumero());
                     return habitacion;
                 }
             }
