@@ -18,6 +18,11 @@ public class Main{
         reserva2.anadirCliente(cliente);
         reserva2.anadirHabitacion(habitacion2);
 
-        
+        reserva2.cancelarReserva(habitacion2);
+        habitacion2.getEstado();
+        reserva2.anadirHabitacion(habitacion2);
+
+        reserva2.realizarCheckIn(LocalDate.now(), habitacion2);
+        reserva2.cancelarReserva(habitacion2);
     }
 }

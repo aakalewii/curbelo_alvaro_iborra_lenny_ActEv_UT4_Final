@@ -41,6 +41,13 @@ public class Habitacion {
         }
     }
 
+    public void cancelar() {
+        if (this.estado == Estado.RESERVADO) {
+            this.estado = Estado.DISPONIBLE;
+        } else {
+            System.out.println("La habitación " + this.numero + " está " + this.estado);
+        }
+    }
     public int getNumero() {
         return numero;
     }

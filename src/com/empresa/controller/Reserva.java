@@ -64,6 +64,19 @@ public class Reserva {
         }
     }
 
+    public void cancelarReserva(Habitacion habitacion) {    
+        if (habitacion.getEstado() == Estado.OCUPADO) {
+            System.out.println("No puedes cancelar una reserva de una habitación si ya ha pasado el Check-In.");
+        }else if (habitacion.getEstado() != Estado.RESERVADO) {
+            System.out.println("La habitación " + habitacion.getNumero() + " no está reservada.");
+        } else {
+            habitacion.cancelar();
+            System.out.println("Reserva cancelada para la habitación " + habitacion.getNumero());
+        }
+        
+    }
+
+
     public static class ReservaNoDisponibleException extends Exception {
         public ReservaNoDisponibleException(String mensaje) {
             super(mensaje);
