@@ -17,8 +17,7 @@ public class Reserva {
     private LocalDate fechaCheckOut;
     private double precioTotal;
 
-    public Reserva(Cliente cliente, Habitacion habitacion, LocalDate fechaCheckIn,
-            LocalDate fechaCheckOut, double precioTotal) {
+    public Reserva(Cliente cliente, Habitacion habitacion, LocalDate fechaCheckIn, LocalDate fechaCheckOut, double precioTotal) {
         this.idReserva = UUID.randomUUID().toString();
         this.cliente = new ArrayList<>(); 
         this.cliente.add(cliente);
@@ -132,5 +131,33 @@ public class Reserva {
         return null;
     }
 
+    public void calcularPrecio(Reserva reserva) {
+        long dias = reserva.fechaCheckOut.toEpochDay() - reserva.fechaCheckIn.toEpochDay(); // Duración de la estancia en días
+        double total = 0; // Reiniciar el total
+
+        for (Habitacion habitacion : reserva.habitacion) {
+            switch (habitacion.getTipo()) {
+                case INDIVIDUAL:
+                    total += 50 * dias; // Precio fijo para habitaciones individuales
+                    break;
+                case DOBLE:
+                    total += 80 * dias; // Precio fijo para habitaciones dobles
+                    break;
+                case SUITE:
+                    total += 150 * dias; // Precio fijo para suites
+                    break;
+                default:
+                    System.out.println("Tipo de habitación no válido: " + habitacion.getTipo());
+            }
+        }
+
+        reserva.precioTotal = total; // Actualizar el precio total de la reserva
+    System.out.println("El precio total de la reserva es: " + total);
     }
+
+    
+
+    }
+
+
 
