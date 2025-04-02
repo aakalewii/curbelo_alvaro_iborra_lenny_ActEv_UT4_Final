@@ -9,7 +9,7 @@ public class Habitacion {
     private String descripcion;
 
 
-    public Habitacion(int numero, Tipo tipo, double precio, Estado estado, String descripcion) {
+    public Habitacion(int numero, Tipo tipo, Estado estado, String descripcion) {
         this.numero = numero;
         this.tipo = tipo;
         this.precio = precio;

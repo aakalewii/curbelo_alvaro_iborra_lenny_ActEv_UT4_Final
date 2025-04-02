@@ -20,6 +20,14 @@ public class Reserva {
     
 
     public Reserva(LocalDate fechaCheckIn, LocalDate fechaCheckOut) {
+        long dias = fechaCheckOut.toEpochDay() - fechaCheckIn.toEpochDay(); // Duración de la estancia en días
+        if (dias > 90) {
+            throw new IllegalArgumentException("La duración de la estancia debe ser menor a 90 días.");
+            
+        }
+
+        
+
         if (fechaCheckIn.isBefore(LocalDate.now())) {
             throw new IllegalArgumentException("La fecha de check-in no puede ser anterior a la fecha actual.");
         }
@@ -72,10 +80,10 @@ public class Reserva {
         } else {
             habitacion.cancelar();
             System.out.println("Reserva cancelada para la habitación " + habitacion.getNumero());
+            calcularPrecio(this); // Calcular el precio total de la reserva
         }
         
     }
-
 
     public static class ReservaNoDisponibleException extends Exception {
         public ReservaNoDisponibleException(String mensaje) {
@@ -85,9 +93,13 @@ public class Reserva {
 
 
     public void realizarCheckIn(LocalDate fecha, Habitacion habitacion) {
+        if (fecha.isAfter(fechaCheckOut)) {
+            throw new IllegalArgumentException("La fecha de check-in no puede ser posterior a la fecha de check-out.");
+        }
         this.fechaCheckIn = fecha;
         System.out.println("Check-in realizado el: " + fechaCheckIn);
         habitacion.ocupar();
+        
     }
 
     public void realizarCheckOut(LocalDate fecha, Habitacion habitacion) {
@@ -160,25 +172,55 @@ public class Reserva {
         double total = 0; // Reiniciar el total
 
         for (Habitacion habitacion : reserva.habitacion) {
-            switch (habitacion.getTipo()) {
-                case INDIVIDUAL:
-                    total += 50 * dias; // Precio fijo para habitaciones individuales
-                    break;
-                case DOBLE:
-                    total += 80 * dias; // Precio fijo para habitaciones dobles
-                    break;
-                case SUITE:
-                    total += 150 * dias; // Precio fijo para suites
-                    break;
-                default:
-                    System.out.println("Tipo de habitación no válido: " + habitacion.getTipo());
+            // Solo calcular el precio de habitaciones reservadas u ocupadas
+            if (habitacion.getEstado() == Estado.RESERVADO || habitacion.getEstado() == Estado.OCUPADO) {
+                switch (habitacion.getTipo()) {
+                    case INDIVIDUAL:
+                        total += 50 * dias; // Precio fijo para habitaciones individuales
+                        break;
+                    case DOBLE:
+                        total += 80 * dias; // Precio fijo para habitaciones dobles
+                        break;
+                    case SUITE:
+                        total += 150 * dias; // Precio fijo para suites
+                        break;
+                    default:
+                        System.out.println("Tipo de habitación no válido: " + habitacion.getTipo());
+                }
+            } else {
+                System.out.println("La habitación " + habitacion.getNumero() + " no se incluye en el cálculo porque está en estado: " + habitacion.getEstado());
             }
-
-
         }
 
         reserva.precioTotal = total; // Actualizar el precio total de la reserva
     System.out.println("El precio total de la reserva es: " + total);
+    }
+
+    public void calcularPrecioTotal(){
+        calcularPrecio(this);
+    }
+
+    public void resumenClientesHabitacionesReservadas(){
+        System.out.println("Resumen de Clientes con habitaciones reservadas:");
+        for (Cliente cliente : this.cliente) {
+            System.out.println("Cliente: " + cliente.getNombre() + ", ID: " + cliente.getIdCliente());
+            for (Habitacion habitacion : this.habitacion) {
+                if (habitacion.getEstado() == Estado.RESERVADO) {
+                    System.out.println("Habitación " + habitacion.getNumero() + ", Estado: " + habitacion.getEstado());
+                }
+            }
+        }
+    }
+
+    public void historialClientesHabitaciones(){
+        System.out.println("Historial de Clientes con sus reservas:");
+        for (Cliente cliente : this.cliente) {
+            System.out.println("Cliente: " + cliente.getNombre() + ", ID: " + cliente.getIdCliente());
+            for (Habitacion habitacion : this.habitacion) {
+                    System.out.println("Habitación " + habitacion.getNumero()+", Fecha Check-In: " + fechaCheckIn + ", Fecha Check-Out: " + fechaCheckOut);
+                
+            }
+        }
     }
 
     
