@@ -131,6 +131,14 @@ public class Reserva {
         return null;
     }
 
+    public void reservasActivas(Cliente cliente) {
+        if (cliente.getReservasActivas() > 0) {
+            System.out.println("El cliente " + cliente.getNombre() + " tiene " + cliente.getReservasActivas() + " reservas activas.");
+        } else {
+            System.out.println("El cliente " + cliente.getNombre() + " no tiene reservas activas.");
+        }
+    }
+
     public Habitacion buscarEstado(String estado){
         try{
             Estado enumEstado = Estado.valueOf(estado.toUpperCase());
