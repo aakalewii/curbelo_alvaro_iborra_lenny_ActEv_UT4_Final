@@ -17,6 +17,8 @@ public class Reserva {
     private LocalDate fechaCheckOut;
     private double precioTotal;
 
+    
+
     public Reserva(Cliente cliente, Habitacion habitacion, LocalDate fechaCheckIn, LocalDate fechaCheckOut, double precioTotal) {
         if (fechaCheckIn.isBefore(LocalDate.now())) {
             throw new IllegalArgumentException("La fecha de check-in no puede ser anterior a la fecha actual.");
