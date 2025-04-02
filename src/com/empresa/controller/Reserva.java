@@ -18,11 +18,16 @@ public class Reserva {
     private double precioTotal;
 
     public Reserva(Cliente cliente, Habitacion habitacion, LocalDate fechaCheckIn, LocalDate fechaCheckOut, double precioTotal) {
+        if (fechaCheckIn.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("La fecha de check-in no puede ser anterior a la fecha actual.");
+        }
+        if (fechaCheckOut.isBefore(fechaCheckIn)) {
+            throw new IllegalArgumentException("La fecha de check-out no puede ser anterior a la fecha de check-in.");
+        }
+
         this.idReserva = UUID.randomUUID().toString();
         this.cliente = new ArrayList<>(); 
-        this.cliente.add(cliente);
         this.habitacion = new ArrayList<>();
-        this.habitacion.add(habitacion);
         this.fechaCheckIn = fechaCheckIn;
         this.fechaCheckOut = fechaCheckOut;
         this.precioTotal = precioTotal;
@@ -36,7 +41,7 @@ public class Reserva {
                 throw new ClienteNoEncontradoException("El cliente ya tiene 3 reservas activas.");
         }
             this.cliente.add(cliente);
-            System.out.println("Cliente añadido a la reserva: " + cliente.getNombre());
+            System.out.println("El Cliente: "+cliente.getIdCliente()+"("+cliente.getNombre()+"), añadido a la reserva: " + idReserva);
         }
     
         // Clase interna para la excepción personalizada
@@ -73,10 +78,6 @@ public class Reserva {
     public void realizarCheckOut(LocalDate fecha, Habitacion habitacion) {
         if (fechaCheckIn == null) {
             System.out.println("Error: No se puede realizar el check-out sin haber hecho el check-in.");
-            return;
-        }
-        if (fecha.isBefore(fechaCheckIn)) {
-            System.out.println("Error: La fecha de check-out no puede ser anterior a la fecha de check-in.");
             return;
         }
         this.fechaCheckOut = fecha;
