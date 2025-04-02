@@ -1,5 +1,5 @@
 package com.empresa.controller;
-//comentario
+
 import com.empresa.model.Cliente;
 import com.empresa.model.Estado;
 import com.empresa.model.Habitacion;
@@ -23,16 +23,6 @@ public class Reserva {
         long dias = fechaCheckOut.toEpochDay() - fechaCheckIn.toEpochDay(); // Duración de la estancia en días
         if (dias > 90) {
             throw new IllegalArgumentException("La duración de la estancia debe ser menor a 90 días.");
-            
-        }
-
-        
-
-        if (fechaCheckIn.isBefore(LocalDate.now())) {
-            throw new IllegalArgumentException("La fecha de check-in no puede ser anterior a la fecha actual.");
-        }
-        if (fechaCheckOut.isBefore(fechaCheckIn)) {
-            throw new IllegalArgumentException("La fecha de check-out no puede ser anterior a la fecha de check-in.");
         }
 
         this.idReserva = UUID.randomUUID().toString();
@@ -52,6 +42,7 @@ public class Reserva {
                 throw new ClienteNoEncontradoException("El cliente ya tiene 3 reservas activas.");
         }
             this.cliente.add(cliente);
+            cliente.incrementarReservasActivas(); // Incrementar el contador de reservas activas
             System.out.println("El Cliente: "+cliente.getIdCliente()+"("+cliente.getNombre()+"), añadido a la reserva: " + idReserva);
         }
     
@@ -83,6 +74,9 @@ public class Reserva {
             habitacion.cancelar();
             System.out.println("Reserva cancelada para la habitación " + habitacion.getNumero());
             calcularPrecio(this); // Calcular el precio total de la reserva
+            for (Cliente c : this.cliente) {
+                c.decrementarReservasActivas(); // Decrementar el contador de reservas activas
+            }
         }
         
     }
@@ -99,17 +93,25 @@ public class Reserva {
         if (fecha.isAfter(fechaCheckOut)) {
             throw new IllegalArgumentException("La fecha de check-in no puede ser posterior a la fecha de check-out.");
         }
+        if (fecha.isBefore(this.fechaCheckIn)) {
+            throw new IllegalArgumentException("La fecha de check-in no puede ser anterior a la fecha de inicio de la reserva.");
+        }
+    
         this.fechaCheckIn = fecha;
         System.out.println("Check-in realizado el: " + fechaCheckIn);
         habitacion.ocupar();
-        
     }
 
     // Método para realizar el check-out
     public void realizarCheckOut(LocalDate fecha, Habitacion habitacion) {
         if (fechaCheckIn == null) {
-            System.out.println("Error: No se puede realizar el check-out sin haber hecho el check-in.");
-            return;
+            throw new IllegalArgumentException("No se puede realizar el check-out sin haber hecho el check-in.");
+        }
+        if (fecha.isBefore(fechaCheckIn)) {
+            throw new IllegalArgumentException("La fecha de check-out no puede ser anterior a la fecha de check-in.");
+        }
+        if (fecha.isAfter(fechaCheckOut)) {
+            throw new IllegalArgumentException("La fecha de check-out no puede ser posterior a la fecha de check-out de la reserva.");
         }
         this.fechaCheckOut = fecha;
         System.out.println("Check-out realizado el: " + fechaCheckOut);

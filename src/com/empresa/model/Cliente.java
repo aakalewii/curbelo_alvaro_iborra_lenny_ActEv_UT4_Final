@@ -19,11 +19,7 @@ public class Cliente {
     }
 
     // Método para incrementar el contador de reservas activas
-    public void incrementarReservasActivas(Habitacion habitacion) {
-        if (habitacion.getEstado() != Estado.DISPONIBLE) {
-            System.out.println("Error: No se puede reservar una habitación que no está disponible.");
-            return;
-        }
+    public void incrementarReservasActivas() {
         this.reservasActivas++;
     }
 
