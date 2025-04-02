@@ -19,7 +19,7 @@ public class Reserva {
 
     
 
-    public Reserva(Cliente cliente, Habitacion habitacion, LocalDate fechaCheckIn, LocalDate fechaCheckOut, double precioTotal) {
+    public Reserva(LocalDate fechaCheckIn, LocalDate fechaCheckOut) {
         if (fechaCheckIn.isBefore(LocalDate.now())) {
             throw new IllegalArgumentException("La fecha de check-in no puede ser anterior a la fecha actual.");
         }
@@ -165,6 +165,8 @@ public class Reserva {
                 default:
                     System.out.println("Tipo de habitación no válido: " + habitacion.getTipo());
             }
+
+
         }
 
         reserva.precioTotal = total; // Actualizar el precio total de la reserva
