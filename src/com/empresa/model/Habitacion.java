@@ -8,7 +8,7 @@ public class Habitacion {
     private Estado estado;
     private String descripcion;
 
-
+    // Constructor
     public Habitacion(int numero, Tipo tipo, Estado estado, String descripcion) {
         this.numero = numero;
         this.tipo = tipo;
@@ -17,6 +17,7 @@ public class Habitacion {
         this.descripcion = descripcion;
     }
 
+    // Métodos para cambiar el estado de la habitación
     public void reservar() {
         if (this.estado == Estado.DISPONIBLE) {
             this.estado = Estado.RESERVADO;
@@ -50,6 +51,7 @@ public class Habitacion {
     }
 
 
+    // Getters
     public int getNumero() {
         return numero;
     }

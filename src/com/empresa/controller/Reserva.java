@@ -18,7 +18,7 @@ public class Reserva {
     private double precioTotal;
 
     
-
+    // Constructor de la clase Reserva
     public Reserva(LocalDate fechaCheckIn, LocalDate fechaCheckOut) {
         long dias = fechaCheckOut.toEpochDay() - fechaCheckIn.toEpochDay(); // Duración de la estancia en días
         if (dias > 90) {
@@ -43,6 +43,7 @@ public class Reserva {
         this.precioTotal = precioTotal;
     }
     
+    //Funcion añadir cliente con excepcion
     public void anadirCliente(Cliente cliente) throws ClienteNoEncontradoException {
         if (cliente == null) {
             throw new ClienteNoEncontradoException("El cliente no puede ser nulo.");
@@ -61,7 +62,7 @@ public class Reserva {
             }
         }
     
-
+    // Método para añadir una habitación a la reserva
     public void anadirHabitacion(Habitacion habitacion) throws ReservaNoDisponibleException {
         if (habitacion.getEstado() != Estado.DISPONIBLE) {
             throw new ReservaNoDisponibleException("La habitación "+ habitacion.getNumero()+" no está disponible.");
@@ -72,6 +73,7 @@ public class Reserva {
         }
     }
 
+    // Método para cancelar una reserva
     public void cancelarReserva(Habitacion habitacion) {    
         if (habitacion.getEstado() == Estado.OCUPADO) {
             System.out.println("No puedes cancelar una reserva de una habitación si ya ha pasado el Check-In.");
@@ -85,13 +87,14 @@ public class Reserva {
         
     }
 
+    // Clase interna para la excepción 
     public static class ReservaNoDisponibleException extends Exception {
         public ReservaNoDisponibleException(String mensaje) {
             super(mensaje);
         }
     }
 
-
+    // Método para realizar el check-in
     public void realizarCheckIn(LocalDate fecha, Habitacion habitacion) {
         if (fecha.isAfter(fechaCheckOut)) {
             throw new IllegalArgumentException("La fecha de check-in no puede ser posterior a la fecha de check-out.");
@@ -102,6 +105,7 @@ public class Reserva {
         
     }
 
+    // Método para realizar el check-out
     public void realizarCheckOut(LocalDate fecha, Habitacion habitacion) {
         if (fechaCheckIn == null) {
             System.out.println("Error: No se puede realizar el check-out sin haber hecho el check-in.");
@@ -117,6 +121,7 @@ public class Reserva {
         }
     }
 
+    // Método para buscar una habitación por número
     public Habitacion buscarnumero(int numero) {
         for (Habitacion habitacion : this.habitacion) {
             if (habitacion.getNumero() == numero) {
@@ -127,6 +132,7 @@ public class Reserva {
         return null;
     }
 
+    // Método para buscar una habitación por tipo
     public Habitacion buscarTipo(String tipo){
         try{
             Tipo enumTipo = Tipo.valueOf(tipo.toUpperCase());
@@ -143,14 +149,9 @@ public class Reserva {
         return null;
     }
 
-    public void reservasActivas(Cliente cliente) {
-        if (cliente.getReservasActivas() > 0) {
-            System.out.println("El cliente " + cliente.getNombre() + " tiene " + cliente.getReservasActivas() + " reservas activas.");
-        } else {
-            System.out.println("El cliente " + cliente.getNombre() + " no tiene reservas activas.");
-        }
-    }
+    
 
+    // Método para buscar una habitación por estado
     public Habitacion buscarEstado(String estado){
         try{
             Estado enumEstado = Estado.valueOf(estado.toUpperCase());
@@ -167,6 +168,22 @@ public class Reserva {
         return null;
     }
 
+    // Método para mostrar las reservas activas de un cliente
+    public void mostrarReservasActivasCliente(Cliente cliente) {
+        List<Integer> habitacionesReservadas = new ArrayList<>();
+        for (Habitacion habitacion : this.habitacion) {
+            if (habitacion.getEstado() == Estado.RESERVADO || habitacion.getEstado() == Estado.OCUPADO) {
+                habitacionesReservadas.add(habitacion.getNumero());
+            }
+        }
+        if (habitacionesReservadas.isEmpty()) {
+            System.out.println("El cliente " + cliente.getNombre() + " no tiene reservas activas.");
+        } else {
+            System.out.println("El cliente " + cliente.getNombre() + " tiene reservadas las habitaciones: " + habitacionesReservadas);
+        }
+    }
+
+    // Método para calcular el precio total de la reserva
     public void calcularPrecio(Reserva reserva) {
         long dias = reserva.fechaCheckOut.toEpochDay() - reserva.fechaCheckIn.toEpochDay(); // Duración de la estancia en días
         double total = 0; // Reiniciar el total
@@ -200,6 +217,7 @@ public class Reserva {
         calcularPrecio(this);
     }
 
+    // Método para mostrar el resumen de clientes con habitaciones reservadas
     public void resumenClientesHabitacionesReservadas(){
         System.out.println("Resumen de Clientes con habitaciones reservadas:");
         for (Cliente cliente : this.cliente) {
@@ -212,6 +230,7 @@ public class Reserva {
         }
     }
 
+    // Método para mostrar el historial de clientes con sus reservas
     public void historialClientesHabitaciones(){
         System.out.println("Historial de Clientes con sus reservas:");
         for (Cliente cliente : this.cliente) {
@@ -223,9 +242,20 @@ public class Reserva {
         }
     }
 
+    // Método para mostrar el resumen de habitaciones
+    public void resumenHabitaciones() {
+        System.out.println("Resumen de Habitaciones:");
+        for (Habitacion habitacion : this.habitacion) {
+            System.out.println("Habitación " + habitacion.getNumero() + 
+                               ", Tipo: " + habitacion.getTipo() + 
+                               ", Estado: " + habitacion.getEstado() + 
+                               ", Descripción: " + habitacion.getDescripcion());
+        }
+    }
+
     
 
-    }
+}
 
 
 
